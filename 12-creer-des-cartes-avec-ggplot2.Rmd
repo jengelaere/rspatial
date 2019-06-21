@@ -809,7 +809,7 @@ ggplot(data=tt)+
 ### Les cartes à ronds proportionnels
 
 ggplot ne peut attribuer par défaut un rond proportionnel à un polygone.
-pour travailler sur des ronds proportionnels,il faut d'abord créer le centroid de nos zones et ensuite tracer un rond proportionnel avec geom_sf.
+pour travailler sur des ronds proportionnels,il faut d'abord créer le centroide de nos zones et ensuite tracer un rond proportionnel avec geom_sf.
 
 ```{r, echo=T,eval=T,fig.height=5,fig.width=12}
 data("World")
@@ -825,12 +825,12 @@ tt<-World %>%
               group_by(Country_or_Area_Code) %>%
               filter(!is.na(Value)) %>%
               filter(Year==max(Year)))
-ttc<-st_centroid(tt)
+ttc<-st_centroid(tt, st_centroid(of_largest_polygon=TRUE))
 
 ggplot(data=ttc)+
   geom_sf(data=tt,fill="white")+
   geom_sf(aes(color=Value,size=Value))
 ```
 
-*Attention: les centroids ne sont pas forcément là où on le pense:
-par exemple, le centroid de la France est décalé en Espagne puisqu'il prend en compte les DOM.*
+*Attention: les centroides ne sont pas forcément là où on le pense :
+par exemple, sans l'option 'of_largest_polygon=TRUE' le centroide de la France serait décalé en Espagne puisqu'il prend en compte les DOM.*
